@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+
 const CustomSelect = ({
   isClearable = false,
   isSearchable = false,
   isDisabled = false,
   options = [],
   value = null,
-  placeholder = "Select...",
+  placeholder="select",
   isGrouped = false,
   isMulti = false,
   onChangeHandler,
@@ -16,6 +17,7 @@ const CustomSelect = ({
   const [selectedOptions, setSelectedOptions] = useState(isMulti ? [] : null);
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   useEffect(() => {
     if (value) {
@@ -47,6 +49,7 @@ const CustomSelect = ({
         onChangeHandler(option);
       }
       setIsOpen(false);
+      
     }
   };
 
@@ -83,6 +86,7 @@ const CustomSelect = ({
 
       return Object.entries(groupedOptions).map(([group, options]) => (
         <div key={group}>
+          
           <div style={{ fontWeight: "bold", padding: "5px" }}>{group}</div>
           {options.map((option) => (
             <div
@@ -122,7 +126,7 @@ const CustomSelect = ({
 
   return (
     <div style={{ position: "relative", width: "300px" }}>
-      <div
+      <div className="custom-select-container"
         onClick={toggleDropdown}
         style={{
           padding: "10px",
@@ -131,21 +135,37 @@ const CustomSelect = ({
           backgroundColor: isDisabled ? "#f5f5f5" : "#fff",
           cursor: isDisabled ? "not-allowed" : "pointer",
         }}
+        placeholder={placeholder}
       >
-        {isMulti
-          ? selectedOptions.map((option) => option.label)
-          : selectedOptions.label || placeholder}
+      {isMulti ? (
+        selectedOptions.map((option) => (
+          <button key={option.value} style={{
+            color:"black",
+            border:"carve"
 
-        {isClearable && selectedOptions && (
-          <button
-            onClick={(e) => {
+          }} className="badge">
+            {option.label}
+          </button>
+        ))
+      ) : ( 
+      null
+      )}
+      { selectedOptions.length===0 ? "Please Select Item" : null}
+      
+        {isClearable && selectedOptions.length > 0 && (
+          // <button
+          //   onClick={(e) => {
+          //     e.preventDefault();
+          //     clearSelection();
+          //   }}
+          //   style={{ marginLeft: "10px" }}
+          // >
+            <i onClick={(e) => {
               e.preventDefault();
               clearSelection();
             }}
-            style={{ marginLeft: "10px" }}
-          >
-            <i class="bi bi-x-lg"></i>
-          </button>
+            style={{ marginLeft: "10px" }} class="bi bi-x-lg"></i>
+          // </button>
         )}
       </div>
       {isOpen && !isDisabled && (
